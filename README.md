@@ -1,0 +1,1 @@
+# kinkoku.github.io
