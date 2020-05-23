@@ -1,103 +1,139 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
-    <title>Midterm</title>
-    <meta name="midterm" content="Interactions - A-Frame">
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
-  <!-- import randomizer component -->
-  <script src="https://unpkg.com/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
-  <!-- import entity generator component -->
-  <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+	<title>VR Art Gallery</title>
+	<meta name="Final" content="Final">
+	<script src="js/aframe-master.1.0.4.min.js"></script>
+	<script src="js/aframe-environment-component.min.js"></script>
+	<script src="js/extended-wasd-controls.js"></script>
+	<script src="js/aframe-spritesheet-animation.js"></script>
+	<script src="js/aframe-look-at-component.js"></script>
+	<script src="js/aframe-render-order-component.min.js"></script>
 </head>
 
 <body>
-    <a-scene>
 
-        <a-assets>
-            <img id="gndTexture" src="assets/img/concrete.png">
-            <img id="brain" src="assets/img/PLAN.jpg">
-            <img id="dims" src="assets/img/darkk.jpg">
-            <img id="sky" src="assets/img/EFFECT.gif">
-            <img id="metro" src="assets/img/ss.jpg">
-        </a-assets>
+<script>
+AFRAME.registerComponent("boundary",
+{
+	init: function()
+	{
 
-     <!-- Camera Rig with checkpoint movement -->
+	},
 
-     <a-entity environment="preset: egypt; groundColor: #ccc; grid: cross"></a-entity>
-     
-     <a-gltf-model src="#room" scale="0.1 0.1 0.1" position="-3.02544 -0.17931 47.39248"></a-gltf-model>
+	tick: function(time, deltaTime)
+	{
+		if (this.el.object3D.position.z < -2.5)
+			this.el.object3D.position.z = -2.5;
+		if (this.el.object3D.position.z >  2.5)
+			this.el.object3D.position.z =  2.5;
+		if (this.el.object3D.position.x < -2.5)
+			this.el.object3D.position.x = -2.5;
+		if (this.el.object3D.position.x >  2.5)
+			this.el.object3D.position.x =  2.5;
 
-      <a-entity id="rig" movement-controls="controls: checkpoint" checkpoint-controls="mode: animate">
-        <a-entity camera
-                  position="0 1.6 0"
-                  look-controls="pointerLockEnabled: true">
-          <a-entity cursor
-                    position="0 0 -1"
-                    geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03;"
-                    material="color: #CCC; shader: flat;"></a-entity>
-        </a-entity>
-      </a-entity>
-
-      <!-- Checkpoints -->
-      <a-entity position="1 0 1">
-        <a-cylinder checkpoint="" radius="1" height="0.1" position="5.13342 0 0.36425" color="#39BB82"></a-cylinder>
-        <a-cylinder checkpoint="" radius="1" height="0.6" position="-1.35106 1.07381 0.72317" color="yellow"></a-cylinder>
-        <a-cylinder checkpoint="" radius="1" height="0.1" position="-1.35106 1.07381 -3.52685" color="#39BB82"></a-cylinder>
-      </a-entity>
-
-
-      <!-- interactive cubes -->
-      <a-entity id="cubes" position="0 1 -2">
-        <a-box position="-15 3 3" rotation="0 45 30" scale="0.75 0.75 0.75" color="#F44336" 
-        event-set__enter="_event: mouseenter; _target: #wall1; material.src: #brain"
-        event-set__enter="_event: mouseenter; _target: #ground; color: #F44336"
-        sound="src: assets/sound/sound9.mp3; on: mouseenter" 
-        animation__scaleup="property: scale; from:1 1 1; to: 2 2 2; loop: false; dur: 1000; easing: easeInSine; startEvents: mouseenter;"
-        animation__scaleout="property: scale; from:2 2 2; to: 1 1 1; loop: false; dur: 1000; easing: easeInSine; startEvents: mouseleave;">
-    </a-box>
-    <a-box position=" -1 2 -5 " rotation="0 45 45 " scale="0.75 0.75 0.75" color="#2196F3" 
-        event-set__enter="_event: mouseenter; _target: #wall; material.src: #sky"
-        event-set__enter="_event: mouseenter; _target: #bg; color: #2196F3" 
-        sound="src: assets/sound/sound20.mp3; on: mouseenter"
-        animation__scaleup="property: scale; from:1 1 1; to: 2 2 2; loop: false; dur: 1000; easing: easeInSine; startEvents: mouseenter;"
-        animation__scaleout="property: scale; from:2 2 2; to: 1 1 1; loop: false; dur: 1000; easing: easeInSine; startEvents: mouseleave;">
-    </a-box>
-    <a-box position="2 2 -4 " rotation="0 45 30 " scale="0.75 0.75 0.75 " color="#009688" 
-        event-set__enter="_event: mouseenter; _target: #wall; material.src: #metro"
-        event-set__enter="_event: mouseenter; _target: #bg; color: #009688" 
-        sound="src: assets/sound/sound24.mp3; on: mouseenter"
-        animation__scaleup="property: scale; from:1 1 1; to: 2 2 2; loop: false; dur: 1000; easing: easeInSine; startEvents: mouseenter;"
-        animation__scaleout="property: scale; from:2 2 2; to: 1 1 1; loop: false; dur: 1000; easing: easeInSine; startEvents: mouseleave;"
-        >
-    </a-box>
-    <a-box position="1 1 -5 " rotation="0 70 30 " scale="0.9 0.9 0.9 " color="#E91E63" 
-        event-set__enter="_event: mouseenter; _target: #wall; material.src: #dims"
-        event-set__enter="_event: mouseenter; _target: #bg; color: #E91E63" 
-        sound="src: assets/sound/sound27.mp3; on: mouseenter"
-        animation__scaleup="property: scale; from:1 1 1; to: 2 2 2; loop: false; dur: 1000; easing: easeInSine; startEvents: mouseenter;"
-        animation__scaleout="property: scale; from:2 2 2; to: 1 1 1; loop: false; dur: 1000; easing: easeInSine; startEvents: mouseleave;">
-     </a-box>
-      </a-entity>
-
-      <a-entity id="wall1" geometry="primitive: plane; height: 10; width: 10" material="side: double; src:#metro" position="-1.35106 1.07381 0.72317" scale="2.17 2.17 2.17"></a-entity>
-      <a-entity id="wall2" geometry="primitive: plane; height: 10; width: 10" material="side: double; src:#metro" position="-15 3 3" scale="2.17 2.17 2.17"></a-entity>
-      <a-entity id="wall3" geometry="primitive: plane; height: 10; width: 10" material="side: double; src:#metro" position="-15 3 3" scale="2.17 2.17 2.17"></a-entity>
-
-      <a-entity id="wall" geometry="primitive: plane; height: 10; width: 10" material="side: double; src:#metro" position="-0.616 11.413 -15.29" scale="2.17 2.17 2.17"></a-entity>
+	}
+});
+       
+</script>
+<!-- 
+	disable press "F" to enter fullscreen mode.
+ -->
+<a-scene environment="preset: default; lighting: none;" 
+	keyboard-shortcuts="enterVR: false;">
+	
+	<!-- Dim ambient lighting.  -->
+	<a-light type="ambient" color="#222222"></a-light>
+	<a-light type="point" color="#CCCCCC" position="0 3 0"></a-light>
+	
+	<a-assets timeout="10000">
+		<img id="crate" 	src="images/crate.jpg" />
+		<img id="grid" 		src="images/color-grid.png" />
+		<img id="wood" 		src="images/tile2.jpg" />
+		<img id="plaster"	src="images/vic.jpg" />
+		<img id="swift" 	src="images/photos/bag.png" />
+		<img id="sasi" 	src="images/photos/ss.jpg" />
+		<img id="nerd" 	src="images/photos/station1.jpg" />
+		<img id="pn" 	src="images/photos/paknam2.jpg" />
+		<a-asset-item id="table" src="models/table.glb"></a-asset-item>
+		<a-asset-item id="picture" src="models/picture.glb"></a-asset-item>
+		<a-asset-item id="pagoda" src="models/pagoda.glb"></a-asset-item>
 
 
 
-        <a-sky id="bg" color="#444444"></a-sky>
+		<!-- <video id="video" loop="true" src="video/sintel.mp4"></video> -->
+	</a-assets>
 
-        <a-plane src="#gndTexture" rotation="0 0 0 " width="100 " height="50 "></a-plane>
 
-    </a-scene>
+	<a-assets>
+    	<img id="crate" src="images/crate.jpg">
+    	<img id="box-label" src="images/box-label.png">
+    	<img id="glow" src="images/glow.png">
+    	<img id="grid" src="images/color-grid.png">
+    	<img id="sheet" src="images/spritesheet-fireball.png"/>
+    	<img id="sheet2" src="images/fireball-up.png"/>
+  	</a-assets>
+	
+	<!-- simulated glow on a sphere + animated pulse effect -->
+	<a-entity id="glowPulse" position="-1 1.6 -5"
+		animation__spin="property: rotation; from: 0 0 0; to: 0 360 0; dur: 4000; loop: true; easing: linear;">
+		<a-sphere radius="0.5" material="src: #grid; emissive: yellow; emissive-intensity: 0.5;"
+		animation__pulse="property: material.emissiveIntensity; from: 0.5; to: 0.0; dur: 1000; loop: true; dir: alternate; easing: linear;"></a-sphere>
+		<a-image width="2" height="2" src="#glow" look-at="#player" color="yellow" material="transparent: true; opacity: 1.0; alphaTest: 0.01;"
+		animation__pulse="property: material.opacity; from: 1.0; to: 0.0; dur: 1000; loop: true; dir: alternate; easing: linear;"></a-image>
+	</a-entity>
+
+
+	<!--
+		create a camera entity
+	-->
+	<a-entity id="camera" camera
+		position="0 1.6 0"
+		look-controls wasd-controls="acceleration: 4;" boundary>
+	</a-entity>
+
+	
+	<!-- floor -->  
+	<a-box width="6.5" depth="6.5" height="0.1" scale="2 2 2" position="0 0 0" material="src:#wood; repeat:6 6;" ></a-box>
+
+
+	<!-- walls -->
+	<a-box width="24" depth="0.1" height="7" position="0 1.5 -3.1" material="src:#plaster; repeat:12 4;"></a-box>
+
+	<a-box width="23" depth="0.1" height="7" position="0 1.5 3.1" material="src:#plaster; repeat: 12 4;"></a-box>
+
+	<a-box width="24" depth="0.1" height="7" position="3.1 1.5 0" rotation="0 90 0" material="src:#plaster; repeat: 12 4; "></a-box>
+
+	<a-box width="24" depth="0.1" height="7" position="-3.1 1.5 0" rotation="0 90 0" material="src:#plaster; repeat: 12 4;"></a-box>
+
+	<!-- artwork -->
+	
+	<a-entity position="0 1.2 -3" rotation="0 270 0" scale="1 1 1 " gltf-model="#picture">
+		<a-plane position="0.02 0.68 0" rotation="0 90 0" material="shader:flat; src:#swift; side:double;"></a-plane>
+	</a-entity>
+
+	
+	<a-entity position="3 1.2 0" rotation="0 180 0" scale="1 1 1 " gltf-model="#picture">
+		<a-plane position="0.02 0.68 0" rotation="0 90 0" material="shader:flat; src:#sasi; side:double;"></a-plane>
+	</a-entity>
+
+	<a-entity position="-3 1.2 0" rotation="0 0 0" scale="1 1 1" gltf-model="#picture">
+		<a-plane position="0.02 0.68 0" rotation="0 90 0" material="shader:flat; src:#nerd; side:double;"></a-plane>
+	</a-entity>
+
+	<a-entity position="0 1.2 3" rotation="0 90 0" scale="1 1 1" gltf-model="#picture">
+		<a-plane position="0.02 0.68 0" rotation="0 90 0" material="shader:flat; src:#pn; side:double;"></a-plane>
+	</a-entity>
+
+	<!-- table display -->
+	<!--<a-entity position="-2.5 0 -2.5" color="#0000FF" gltf-model="#table">
+	</a-entity>
+
+	<a-entity position="-2.5 0.9 -2.5" scale="0.1 0.1 0.1" color="#0000FF" gltf-model="#pagoda">
+	</a-entity>-->
+
+</a-scene>
+
 </body>
-
 </html>
-
-<!DOCTYPE html>
